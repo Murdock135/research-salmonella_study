@@ -46,6 +46,13 @@ def pad_list(list_to_pad, target_length):
     """Pad the list with None until it reaches the target length"""
     return list_to_pad + [None] * (target_length - len(list_to_pad))
 
+def append_state_name(county_name, state_name):
+    if county_name is not None:
+        return f"{county_name}, {state_name}".title()
+    else:
+        print(f"County name is None for {state_name}")
+        return None
+
 # Main function to load data and match counties
 if __name__ == "__main__":
     processed_data_path = (r"C:\Users\Zayan\Documents\code\personal_repos\salmonella\Data\processed_data")
