@@ -2,7 +2,7 @@ import os
 
 class Config:
     # Project root directory
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    BASE_DIR = 'C:/Users/Zayan/Documents/code/personal_repos/salmonella_study'
 
     # Data directories
     DATA_DIR = os.path.join(BASE_DIR, 'data')
@@ -20,6 +20,6 @@ class Config:
 
     # Output directories
     RESULTS_DIR = os.path.join(BASE_DIR, 'results')
-    FIGURES_DIR = os.path.join(RESULTS_DIR, 'figures')
-    REPORTS_DIR = os.path.join(RESULTS_DIR, 'reports')
+    # FIGURES_DIR = os.path.join(RESULTS_DIR, 'figures')
+    # REPORTS_DIR = os.path.join(RESULTS_DIR, 'reports')
 

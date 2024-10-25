@@ -13,7 +13,7 @@ setup(
         "matplotlib",
         "tqdm",
         "thefuzz",
-        "msno"
+        "missingno"
     ],
     author="Qazi Zarif Ul Islam",
     author_email="zayan.qazi.mail@gmail.com",
