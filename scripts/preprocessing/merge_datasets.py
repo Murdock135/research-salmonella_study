@@ -40,7 +40,7 @@ def main(svi_path, pn_path, mmg_path, pop_data_path, year, state, state_long):
     # select data for specified year and state
     pn_data = pn_data.loc[(pn_data["IsolatDate"].dt.year == year) & (pn_data["SourceState"] == state)].reset_index(drop=True)
     svi_data = svi_data.loc[svi_data["ST_ABBR"] == state].reset_index(drop=True)
-    mmg_data = mmg_data.loc[mmg_data['State'] == state].reset_index(drop=True)
+    mmg_data = mmg_data.loc[(mmg_data['State'] == state) & (mmg_data['Year'] == year)].reset_index(drop=True)
 
     # Replace County names in PulseNet with County names in population data
     county_names = population_data['County'].unique()
@@ -101,6 +101,8 @@ def main(svi_path, pn_path, mmg_path, pop_data_path, year, state, state_long):
 
     # Prepare MMG for merging
     mmg_data.rename(columns={'County, State': 'County'}, inplace=True)
+    mmg_data['County'] = mmg_data['County'].str.replace(f'{state_long}', '')
+    mmg_data['County'] = mmg_data['County'].str.replace('County', '')
     mmg_data['County'] = mmg_data['County'].apply(lambda x: process.extractOne(x, county_names, scorer=fuzz.token_sort_ratio)[0])
 
     # Merge
