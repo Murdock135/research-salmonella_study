@@ -33,3 +33,14 @@ def get_population(population_xlsx_path, state_long=None, year=None) -> pd.DataF
         return population_data[["County", year]]
     else:
         return population_data
+    
+def rearrange_cols(df, col_positions):
+    cols = df.columns.tolist()
+    
+    for col, pos in col_positions.items():
+        cols.remove(col)
+        cols.insert(pos, col)
+
+    return df.reindex(columns=cols)
+
+

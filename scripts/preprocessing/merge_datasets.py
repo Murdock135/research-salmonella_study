@@ -4,7 +4,7 @@ import pandas as pd
 import os
 from thefuzz import process, fuzz
 from salmonella_study import utils
-from salmonella_study.data_processing import get_population, modify_county_names
+from salmonella_study import data_processing as processing
 from salmonella_study.config import Config
 import logging
 
@@ -24,7 +24,7 @@ def main(svi_path, pn_path, mmg_path, pop_data_path, year, state, state_long):
         svi_data = utils.read_data(svi_path)
         pn_data = utils.read_data(pn_path, sheet="2020-2023")
         mmg_data = utils.read_data(mmg_path, sheet='County')
-        population_data = get_population(pop_data_path, state_long, year)
+        population_data = processing.get_population(pop_data_path, state_long, year)
     except Exception as e:
         logging.error(f"Error reading data: {e}")
         return
@@ -69,13 +69,35 @@ def main(svi_path, pn_path, mmg_path, pop_data_path, year, state, state_long):
     salmonella_per_county_df.to_csv(save_path, index=False)
     logging.info(f"Saved salmonella per county data to {save_path}")
 
-    # modify the 'County' column in SVI data
+    # Prepare SVI for merging
     svi_data.rename(columns={'COUNTY': 'County'}, inplace=True)
-    # svi_data["County"] = svi_data["County"].apply(modify_county_names)
     svi_data["County normalized"] = svi_data["County"].apply(lambda x: process.extractOne(x, county_names, scorer=fuzz.token_sort_ratio)[0])
+    svi_data = svi_data.drop(columns=(col for col in svi_data.columns if col.startswith('M')))
+    svi_data = svi_data.drop(columns=['ST', 'STATE', 'ST_ABBR'])
 
     # merge svi and salmonella per County
     merged = pd.merge(svi_data, salmonella_per_county_df, how="outer", on="County")
+    save_path = os.path.join(processed_data_path, "salmonella_population", f"svi_vs_salmonella-rate_{state}_{year}.csv")
+    merged.to_csv(save_path, index=False)
+
+    logging.info("SVI and salmonella rates have been merged. Look into the \
+                 file and check for edge cases and deal with them manually \
+                 before continuing the merging process.")
+    user_confirmation = input("\nHave you dealt with edge cases? (y/n): ")
+
+    # Exit function if user has not handled edge cases
+    while True:
+        user_confirmation = input("\nHave you dealt with edge cases? (y/n): ").lower()
+        if user_confirmation == 'y':
+            break
+        elif user_confirmation == 'n':
+            logging.info("Please handle the edge cases before continuing. Check the saved file at: " + save_path)
+        else:
+            logging.info("Invalid input. Please enter 'y' or 'n'")
+    
+    # This merged df was modified manually in csv form to make it look nicer
+    # Load the csv instead of using the 'merged' df
+    merged = pd.read_csv(save_path)
 
     # Prepare MMG for merging
     mmg_data.rename(columns={'County, State': 'County'}, inplace=True)
@@ -93,7 +115,7 @@ def main(svi_path, pn_path, mmg_path, pop_data_path, year, state, state_long):
     merged = merged[cols]
 
     # Save merged data
-    save_path = os.path.join(processed_data_path, "salmonella_population", f"salmonella_and_svi_{state}_{year}.csv")
+    save_path = os.path.join(processed_data_path, "salmonella_population", f"sense-d_socioecono_salmonella_{state}_{year}.csv")
     merged.to_csv(save_path, index=False)
     logging.info(f"Saved merged data to {save_path}")
 
