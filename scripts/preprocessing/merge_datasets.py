@@ -8,7 +8,7 @@ from salmonella_study import data_processing as processing
 from salmonella_study.config import Config
 import logging
 
-pd.options.display.max_rows = 300
+pd.options.display.max_rows = 20
 
 # paths
 raw_data_path = Config.RAW_DATA_DIR
@@ -104,6 +104,7 @@ def main(svi_path, pn_path, mmg_path, pop_data_path, year, state, state_long):
     mmg_data['County'] = mmg_data['County'].str.replace(f'{state_long}', '')
     mmg_data['County'] = mmg_data['County'].str.replace('County', '')
     mmg_data['County'] = mmg_data['County'].apply(lambda x: process.extractOne(x, county_names, scorer=fuzz.token_sort_ratio)[0])
+    mmg_data.drop(columns=['State', 'FIPS'], inplace=True)
 
     # Merge
     merged = pd.merge(merged, mmg_data, how='outer', on='County')
