@@ -46,6 +46,7 @@ Thumbs.db
 .ipynb_checkpoints
 
 # Data files (uncomment if you don't want to track data files)
+data/
 *.csv
 *.xlsx
 *.json
@@ -63,7 +64,5 @@ Thumbs.db
 *.bak
 *.tmp
 
-# Specific to this project
-salmonella_study/data/raw/
-salmonella_study/data/processed/
-salmonella_study/results/
+# Archive
+archive/
