@@ -20,7 +20,7 @@ setup(
     description="A study on Salmonella",
     long_description=open(readme_path).read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/salmonella_study",
+    url="https://github.com/Murdock135/research-salmonella_study",
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",

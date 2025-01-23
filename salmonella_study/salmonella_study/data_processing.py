@@ -1,8 +1,7 @@
 import pandas as pd
 
 def modify_county_names(county_name: str):
-    """Modify a County name such that the word 'County' is removed and
-    letters are converted to block letters. For example, 'St. Louis County' -> 'ST. LOUIS'
+    """Title-ize county names and remove the word 'County'. For example, 'St. Louis County' -> 'St. Louis'
     """
 
     return county_name.replace("County", "").title().strip()

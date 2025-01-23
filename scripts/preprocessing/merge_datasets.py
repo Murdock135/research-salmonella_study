@@ -18,7 +18,7 @@ results_path = Config.RESULTS_DIR
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def main(svi_path, pn_path, mmg_path, pop_data_path, year, state, state_long):
+def merge(svi_path, pn_path, mmg_path, pop_data_path, year, state, state_long):
     logging.info("Reading data...")
     try:
         svi_data = utils.read_data(svi_path)
@@ -122,6 +122,9 @@ def main(svi_path, pn_path, mmg_path, pop_data_path, year, state, state_long):
     merged.to_csv(save_path, index=False)
     logging.info(f"Saved merged data to {save_path}")
 
+    # Return the merged data
+    return merged
+
     # Uncomment the following block if correlation analysis is needed
     """
     # correlation matrix
@@ -167,7 +170,7 @@ if __name__ == "__main__":
 
     user_confirmation = input("\nProceed? (y/n): ")
     if user_confirmation.lower() == 'y':
-        main(svi_path, pn_path, mmg_path, pop_data_path, year, state, state_long) 
+        _ = merge(svi_path, pn_path, mmg_path, pop_data_path, year, state, state_long) 
         logging.info("Processing complete!")
     else:
         logging.info("Script execution cancelled by user.")

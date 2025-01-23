@@ -1,13 +1,27 @@
 import pandas as pd
 import io
+import tomllib
+import os
+
+# import custom package 'salmonella_study'
+import salmonella_study
+from salmonella_study.config import Config
+
+raw_data_path = Config.RAW_DATA_DIR
+processed_data_path = Config.PROCESSED_DATA_DIR
+results_path = Config.RESULTS_DIR
 
 def get_df_info(df):
     buffer = io.StringIO()
     df.info(verbose=True, buf=buffer)
     return buffer.getvalue()
 
-
 if __name__ == "__main__":
+    # load config file
+    config_path = r'C:\Users\Zayan\Documents\code\personal_repos\research-salmonella_study\config.toml'
+    with open(config_path, mode='rb') as config_file:
+        config = tomllib.load(config_file)
+
     MMG_path = "c:/Users/Zayan/Documents/code/personal_repos/salmonella/Data/raw_data/MMG/MMG2022_2020-2019Data_ToShare.xlsx"
     SVI_path = "c:/Users/Zayan/Documents/code/personal_repos/salmonella/Data/raw_data/social_vulnerability_index/SVI_2022_US_county.csv"
     PN_path = "c:/Users/Zayan/Documents/code/personal_repos/salmonella/Data/raw_data/PulseNet data/Export_2020-2023.xlsx"
