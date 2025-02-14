@@ -1,8 +1,14 @@
 import os
+from pathlib import Path
 
 class Config:
+    # Study Parameters
+    year = 2020
+    state =  'MO'
+    state_long = 'Missouri'
+
     # Project root directory
-    BASE_DIR = 'C:/Users/Zayan/Documents/code/personal_repos/salmonella_study'
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
     # Data directories
     DATA_DIR = os.path.join(BASE_DIR, 'data')
